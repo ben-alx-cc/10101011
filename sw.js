@@ -1,22 +1,23 @@
 const CACHE_NAME = 'eins-meditation-v1';
+const BASE_URL = '/10101011';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json',
+  BASE_URL + '/',
+  BASE_URL + '/index.html',
+  BASE_URL + '/manifest.json',
   // Icons (werden später hinzugefügt wenn verfügbar)
-  '/icon-16x16.png',
-  '/icon-32x32.png',
-  '/apple-touch-icon-57x57.png',
-  '/apple-touch-icon-60x60.png',
-  '/apple-touch-icon-72x72.png',
-  '/apple-touch-icon-76x76.png',
-  '/apple-touch-icon-114x114.png',
-  '/apple-touch-icon-120x120.png',
-  '/apple-touch-icon-144x144.png',
-  '/apple-touch-icon-152x152.png',
-  '/apple-touch-icon.png',
-  '/icon-192x192.png',
-  '/icon-512x512.png'
+  BASE_URL + '/icon-16x16.png',
+  BASE_URL + '/icon-32x32.png',
+  BASE_URL + '/apple-touch-icon-57x57.png',
+  BASE_URL + '/apple-touch-icon-60x60.png',
+  BASE_URL + '/apple-touch-icon-72x72.png',
+  BASE_URL + '/apple-touch-icon-76x76.png',
+  BASE_URL + '/apple-touch-icon-114x114.png',
+  BASE_URL + '/apple-touch-icon-120x120.png',
+  BASE_URL + '/apple-touch-icon-144x144.png',
+  BASE_URL + '/apple-touch-icon-152x152.png',
+  BASE_URL + '/apple-touch-icon.png',
+  BASE_URL + '/icon-192x192.png',
+  BASE_URL + '/icon-512x512.png'
 ];
 
 // Install Event - Cache Dateien
@@ -28,9 +29,9 @@ self.addEventListener('install', (event) => {
         console.log('[Service Worker] Caching app shell');
         // Nur verfügbare Dateien cachen
         return cache.addAll([
-          '/',
-          '/index.html',
-          '/manifest.json'
+          BASE_URL + '/',
+          BASE_URL + '/index.html',
+          BASE_URL + '/manifest.json'
         ]);
       })
       .then(() => {
@@ -107,7 +108,7 @@ self.addEventListener('fetch', (event) => {
         }).catch(() => {
           // Network fehler - Fallback für HTML-Requests
           if (event.request.destination === 'document') {
-            return caches.match('/index.html');
+            return caches.match(BASE_URL + '/index.html');
           }
         });
       })
@@ -167,7 +168,7 @@ self.addEventListener('notificationclick', (event) => {
 
   if (event.action === 'explore') {
     event.waitUntil(
-      clients.openWindow('/')
+      clients.openWindow(BASE_URL + '/')
     );
   }
 });
