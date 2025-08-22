@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Icon Generator für EINS PWA</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .icon { margin: 10px; display: inline-block; text-align: center; }
+        canvas { border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>EINS PWA - Icon Generator</h1>
+    <p>Diese Seite generiert die notwendigen Icons für die PWA. Klicken Sie auf "Generate Icons" und laden Sie die Bilder herunter.</p>
+    
+    <button onclick="generateIcons()">Generate Icons</button>
+    <div id="icons"></div>
+
+    <script>
+        const sizes = [16, 32, 57, 60, 72, 76, 114, 120, 144, 152, 180, 192, 512];
+        
+        function generateIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Schwarzer Hintergrund
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, size, size);
+            
+            // Weißer Kreis
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = Math.max(2, size / 128);
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/5, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            // Zentrierte "1"
+            ctx.fillStyle = '#ffffff';
+            ctx.font = `bold ${size/4}px "Courier New", monospace`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('1', size/2, size/2);
+            
+            return canvas;
+        }
+        
+        function generateIcons() {
+            const container = document.getElementById('icons');
+            container.innerHTML = '';
+            
+            sizes.forEach(size => {
+                const canvas = generateIcon(size);
+                const iconDiv = document.createElement('div');
+                iconDiv.className = 'icon';
+                
+                const label = document.createElement('div');
+                label.textContent = `${size}x${size}`;
+                
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL();
+                
+                // Bestimme den Dateinamen
+                let filename;
+                if (size === 16) filename = 'icon-16x16.png';
+                else if (size === 32) filename = 'icon-32x32.png';
+                else if (size === 192) filename = 'icon-192x192.png';
+                else if (size === 512) filename = 'icon-512x512.png';
+                else if (size === 180) filename = 'apple-touch-icon.png';
+                else filename = `apple-touch-icon-${size}x${size}.png`;
+                
+                link.download = filename;
+                link.appendChild(canvas);
+                
+                iconDiv.appendChild(label);
+                iconDiv.appendChild(link);
+                container.appendChild(iconDiv);
+            });
+        }
+    </script>
+</body>
+</html>
